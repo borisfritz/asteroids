@@ -3,6 +3,7 @@
 # throughout this file
 import pygame
 from constants import *
+from player import Player
 
 class Game:
     def __init__(self):
@@ -12,6 +13,7 @@ class Game:
         self.delta_time = 0
         self.ms = 0
         self.elapsed_time = 0
+        self.player = Player(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
     def test(self):
         if self.elapsed_time >= 5:
@@ -29,7 +31,10 @@ class Game:
             self.elapsed_time += self.delta_time
             self.test()
 
-            self.screen.fill((0,0,0))
+            self.screen.fill("black")
+
+            self.player.draw(self.screen)
+            self.player.update(self.delta_time)
             pygame.display.flip()
             self.ms = self.clock.tick(60)
             self.delta_time = self.ms / 1000

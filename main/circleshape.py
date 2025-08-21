@@ -9,6 +9,8 @@ class CircleShape(pygame.sprite.Sprite):
         else:
             super().__init__()
 
+        print(f"DEBUG: x type={type(x)}, x valiue={x}")
+        print(f"DEBUG: y type={type(y)}, y value={y}")
         self.position = pygame.Vector2(x, y)
         self.velocity = pygame.Vector2(0, 0)
         self.radius = radius
