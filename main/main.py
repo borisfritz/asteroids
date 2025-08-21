@@ -12,14 +12,34 @@ class Game:
         self.clock = pygame.time.Clock()
         self.delta_time = 0
         self.ms = 0
+        # Debug variables
+        self.previous_keys = pygame.key.get_pressed()
         self.elapsed_time = 0
-        self.player = Player(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
-    def test(self):
+        # Create Groups
+        self.updatable = pygame.sprite.Group()
+        self.drawable = pygame.sprite.Group()
+
+        # Create Player
+        Player.containers = (self.updatable, self.drawable)
+        self.player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
+    def debug_framerate(self):
         if self.elapsed_time >= 5:
             print(f"Milliseconds per frame: {self.ms}")
             self.elapsed_time = 0
 
+    def debug_keys(self):
+        current_keys = pygame.key.get_pressed()
+        if current_keys[pygame.K_w] and not self.previous_keys[pygame.K_w]:
+            print("W pressed!")
+        if current_keys[pygame.K_s] and not self.previous_keys[pygame.K_s]:
+            print("S pressed!")
+        if current_keys[pygame.K_a] and not self.previous_keys[pygame.K_a]:
+            print("A pressed!")
+        if current_keys[pygame.K_d] and not self.previous_keys[pygame.K_d]:
+            print("D pressed!")
+        self.previous_keys = current_keys
 
     def run(self):
         while True:
@@ -27,18 +47,25 @@ class Game:
                 if event.type == pygame.QUIT:
                     return
 
-            # Test
+            # Debug Framerate
             self.elapsed_time += self.delta_time
-            self.test()
+            self.debug_framerate()
 
+            # Draw and Update
             self.screen.fill("black")
+            for obj in self.drawable:
+                obj.draw(self.screen)
+            self.updatable.update(self.delta_time)
 
-            self.player.draw(self.screen)
-            self.player.update(self.delta_time)
+            # Debug Keys
+            self.debug_keys()
+
+            # Draw Frame
             pygame.display.flip()
+
+            #set FPS, or tick
             self.ms = self.clock.tick(60)
             self.delta_time = self.ms / 1000
-            # self.delta_time = self.clock.tick(60) / 1000
 
 def main():
     game = Game()

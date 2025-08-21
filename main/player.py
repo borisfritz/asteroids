@@ -18,9 +18,9 @@ class Player(CircleShape):
     def draw(self, screen):
         pygame.draw.polygon(screen, "white", self.triangle(), 0)
 
-    def move(move, delta_time):
-        #
-        pass
+    def move(self, delta_time):
+        forward = pygame.Vector2(0, 1).rotate(self.rotation)
+        self.position += forward * PLAYER_SPEED * delta_time
 
     def rotate(self, delta_time):
         self.rotation += PLAYER_TURN_SPEED * delta_time
@@ -32,3 +32,7 @@ class Player(CircleShape):
             self.rotate(-delta_time)
         if keys[pygame.K_d]:
             self.rotate(delta_time)
+        if keys[pygame.K_w]:
+            self.move(delta_time)
+        if keys[pygame.K_s]:
+            self.move(-delta_time)
