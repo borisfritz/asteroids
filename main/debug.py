@@ -36,6 +36,7 @@ class GameDebugger:
         print(f"Active sprites: {len(self.game.updatable)}")
 
     def debug_movement_keys(self):
+        print(f"\n=== MOVEMENT KEYS ===")
         current_keys = pygame.key.get_pressed()
         if current_keys[pygame.K_w] and not self.previous_keys[pygame.K_w]:
             print("W pressed!")
@@ -68,7 +69,7 @@ class GameDebugger:
         if current_keys[pygame.K_F3] and not self.previous_keys[pygame.K_F3]:
             self.debug_performance()
 
-        # F4 - Print Movement Keys untill other debug method is chosen
+        # F4 - Print Movement Keys while F4 is held
         if current_keys[pygame.K_F4] and not self.previous_keys[pygame.K_F5]:
             self.debug_movement_keys()
         

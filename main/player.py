@@ -16,7 +16,7 @@ class Player(CircleShape):
         return [a, b, c]
     
     def draw(self, screen):
-        pygame.draw.polygon(screen, "white", self.triangle(), 0)
+        pygame.draw.polygon(screen, "white", self.triangle(), 2)
 
     def move(self, delta_time):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
