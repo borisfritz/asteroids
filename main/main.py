@@ -6,6 +6,7 @@ import pygame
 from constants import *
 from circleshape import CircleShape
 from player import Player
+from shot import Shot
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from debug import GameDebugger
@@ -26,6 +27,7 @@ class Game:
         self.updatable = pygame.sprite.Group()
         self.drawable = pygame.sprite.Group()
         self.asteroids = pygame.sprite.Group()
+        self.shots = pygame.sprite.Group()
 
         # Create Player
         Player.containers = (self.updatable, self.drawable)
@@ -34,10 +36,13 @@ class Game:
         # Create Asteroid Group
         Asteroid.containers = (self.asteroids, self.updatable, self.drawable)
 
+        # Create Shot Group
+        Shot.containers = (self.shots, self.updatable, self.drawable)
+
         # Create AsteroidField
         AsteroidField.containers = (self.updatable, )
         self.asteroid_field = AsteroidField()
-        
+
     def player_collision(self):
         for each_asteroid in self.asteroids:
             if self.player.collision_check(each_asteroid):
@@ -60,6 +65,13 @@ class Game:
                     asteroid1.velocity = new_velocity_asteroid1
                     asteroid2.velocity = new_velocity_asteroid2
 
+    def asteroid_shot(self):
+        for each_asteroid in self.asteroids:
+            for each_shot in self.shots:
+                if each_asteroid.collision_check(each_shot):
+                    each_asteroid.split()
+                    each_shot.kill()
+
     def run(self):
         while True:
             # Event Handling
@@ -74,6 +86,7 @@ class Game:
             self.updatable.update(self.delta_time)
             self.asteroid_collision()
             self.player_collision()
+            self.asteroid_shot()
 
             # Clear
             self.screen.fill("black")
